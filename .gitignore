@@ -1,0 +1,11 @@
+# directory
+*__pycache__/
+.vscode/*
+.vscode
+# file
+*.db
+*.pyc
+*.png
+*.json
+Comd/spam.py
+Comd/test.py
