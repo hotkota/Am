@@ -6,12 +6,13 @@ class Avatar(commands.Cog):
         self.client = client
 
     @commands.command(aliases = ["avatar", "Avatar", "Аватар"])
-    async def аватар(self, ctx, *, arg: int):
-        avamember = await self.client.fetch_user(arg)
-        emb = discord.Embed(title = f"Аватар {avamember.name}", colour = discord.Color.red())
-        emb.set_image(url = avamember.avatar_url)
-        await ctx.send(embed = emb)
-    
+    async def аватар(self, ctx, *, arg):
+        if len(arg) == 18:
+            avamember = await self.client.fetch_user(arg)
+            emb = discord.Embed(title = f"Аватар {avamember.name}", colour = discord.Color.red())
+            emb.set_image(url = avamember.avatar_url)
+            await ctx.send(embed = emb)
+
     @commands.command(aliases = ["avatar", "Avatar", "Аватар"])
     async def аватар(self, ctx, *, avamember: discord.Member):
         emb = discord.Embed(title = f"Аватар {avamember.name}", colour = discord.Color.red())

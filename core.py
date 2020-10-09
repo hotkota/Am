@@ -1,8 +1,8 @@
-import os
 import discord
 from config import *
 from time import time
 import database as DB
+from os import listdir
 from asyncio import sleep
 from discord.ext import commands
 
@@ -13,10 +13,8 @@ async def status_task():
     while True:
         await client.change_presence(activity = discord.Game("AM"))
         await sleep(10)
-        await client.change_presence(activity = discord.Activity(type = discord.ActivityType.listening, name = "MAB"))
-        await sleep(10)
-        await client.change_presence(activity = discord.Activity(type = discord.ActivityType.watching, name = "0.1 + 0.2 != 0.3"))
-        await sleep(10)
+        await client.change_presence(activity = discord.Game("/help"))
+        await sleep(30)
 
 @client.event
 async def on_ready():
@@ -40,7 +38,7 @@ async def on_message(message):
             DB.economy(message.author.id)
     await client.process_commands(message)
 
-for file in os.listdir("./Comd"):
+for file in listdir("./Comd"):
     if file.endswith(".py"):
         client.load_extension(f"Comd.{file[:-3]}")
 

@@ -6,11 +6,11 @@ from discord.ext import commands
 from memory_profiler import memory_usage
 
 def comd():
-    conn = sqlite3.connect("./data/DB/Database.db")
-    cursor = conn.cursor()
-
-    for row in cursor.execute(f"SELECT commands_numbers FROM commands WHERE am = {True}"):
-        return row[0]
+    with sqlite3.connect("./data/DB/Database.db") as conn:
+        cursor = conn.cursor()
+        for row in cursor.execute(f"SELECT commands_numbers FROM commands WHERE am = {True}"):
+            return row[0]
+    conn.close()
 
 def started():
     with open("./data/TXT/startTime.txt", "r") as file:
@@ -20,7 +20,7 @@ def started():
     return str(time.strftime("%H:%M:%S", time.gmtime(elapsed_time)))
 
 commands_num = 0
-symbols = 4996
+symbols = 4456
 
 for i in os.listdir("../am/Comd"):
     if i.endswith(".py"):

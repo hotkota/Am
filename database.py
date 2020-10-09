@@ -1,29 +1,33 @@
 import time
 import random
-import config
 import sqlite3
+from config import *
 
 def start_database():
-	conn = sqlite3.connect("./data/DB/Database.db")
-	cursor = conn.cursor()
-	cursor.execute("""CREATE TABLE IF NOT EXISTS users (
-	    name TEXT,
-	    id INT,
-	    money BIGINT,
-	    inventory TEXT,
-	    desc TEXT,
-	    lvl INT,
-	    xp INT
-	)""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS premium_guild (
-	    id_guild INT,
-	    premium BOOL,
-	    date INT
-	)""")
-	cursor.execute("""CREATE TABLE IF NOT EXISTS commands (
-	    am BOOL,
-	    commands_numbers BIGINT
-	)""")
+	with sqlite3.connect("./data/DB/Database.db") as conn:
+		cursor = conn.cursor()
+		cursor.execute("""CREATE TABLE IF NOT EXISTS users (
+		    name TEXT,
+		    id INT,
+		    money BIGINT,
+		    inventory TEXT,
+		    desc TEXT,
+		    lvl INT,
+		    xp INT
+		)""")
+		cursor.execute("""CREATE TABLE IF NOT EXISTS premium_guild (
+		    id_guild INT,
+		    premium BOOL,
+		    date INT
+		)""")
+		cursor.execute("""CREATE TABLE IF NOT EXISTS commands (
+		    am BOOL,
+		    commands_numbers BIGINT
+		)""")
+		cursor.execute("""CREATE TABLE IF NOT EXISTS premium_user (
+			id INT,
+			premium INT
+		)""")
 	conn.close()
 
 def commands():
@@ -57,7 +61,7 @@ def proverka(id, author, author_name):
 	with sqlite3.connect("./data/DB/Database.db") as conn:
 		cursor = conn.cursor()
 		if cursor.execute(f"SELECT id FROM users WHERE id = {author}").fetchone() is None:
-			cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)", (author_name, author, 500, '[]', 1, 0))
+			cursor.execute("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)", (author_name, author, 500, '{}', ' ', 1, 0))
 		if cursor.execute(f"SELECT id_guild FROM premium_guild WHERE id_guild = {id}").fetchone() is None:
 			cursor.execute("INSERT INTO premium_guild VALUES (?, ?, ?)", (id, False, time.time()))
 	conn.close()
