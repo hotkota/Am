@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 emb = discord.Embed(title = "Пригласить", colour = discord.Color.red())
-emb.add_field(name = "**Ссылки**",value = "[https://discord.com/oauth2/authorize?client_id=737987355389984848&scope=bot&permissions=8](https://discord.com/oauth2/authorize?client_id=737987355389984848&scope=bot&permissions=8)\n[https://discord.gg/rgsV2AQ](https://discord.gg/rgsV2AQ)")
+emb.add_field(name = "Ссылки", value = "[Пригласить бота](https://discord.com/oauth2/authorize?client_id=737987355389984848&scope=bot&permissions=8)\n[Сервер подержки](https://discord.gg/rgsV2AQ)")
 
 class Invate(commands.Cog):
     def __init__(self, client):

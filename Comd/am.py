@@ -7,6 +7,7 @@ class Am(commands.Cog):
 
     @commands.command(aliases = ["am"])
     async def ам(self, ctx, *, arg):
+        print(arg)
         if arg[0] == "?":
             await ctx.send("Am?")
         else:

@@ -13,7 +13,7 @@ class Ball(commands.Cog):
             emb.description = "Отвечает на заданый вопрос"
             await ctx.send(embed = emb)
         else:
-            message = ["Да","Нет","Возможно"]
+            message = ["Да", "Нет", "Возможно"]
             s = choice(message)
             await ctx.send(s)
 

@@ -1,16 +1,13 @@
-import random
+import os
 import discord
 from config import *
 from time import time
+import database as DB
 from os import listdir
 from asyncio import sleep
-from pymongo import MongoClient
 from discord.ext import commands
 
-cluster = MongoClient(f"mongodb+srv://{password_db}@main.3magc.mongodb.net/users?retryWrites=true&w=majority")
-db = cluster["one_db"]
-
-client = commands.Bot(command_prefix = (prefix, f"<@{id_client}> "))
+client = commands.Bot(command_prefix = (prefix, f"<@{id_client}> "), intents = discord.Intents.all())
 client.remove_command("help")
 
 async def status_task():
@@ -22,31 +19,22 @@ async def status_task():
 
 @client.event
 async def on_ready():
+    am = 0
+    for guild in client.guilds:
+        am += len([i for i in guild.members if not i.bot])
+        print(guild.name, guild.id, guild.owner, len(guild.members), len([i for i in guild.members if i.bot]))
+    print(am)
     with open("./data/TXT/startTime.txt", "w") as file:
         file.write(str(time()))
+    DB.start_database()
     client.loop.create_task(status_task())
     print("готов")
 
 @client.event
 async def on_message(message):
     if message.author.bot is False:
-        if message.content:
-            collection = db["users"]
-            if collection.count_documents({"_id": message.author.id}) == 0:
-                collection.insert_one({
-                    "_id": message.author.id,
-                    "balance": 500,
-                    "description": 'Для дополнительной информации напишите "/осебе"',
-                    "inventory": {},
-                    "xp": 0,
-                    "level": 1
-                })
-            else:
-                xp, level = collection.find_one({"_id": message.author.id})["xp"], collection.find_one({"_id": message.author.id})["level"]
-                collection.update_one({"_id": message.author.id}, {"$set": {"xp": xp + random.randint(15, 25)}})
-                if xp >= (5*level**2 + 50*level + 100):
-                    coin = collection.find_one({"_id": message.author.id})["balance"]
-                    collection.update_one({"_id": message.author.id}, {"$set": {"xp": 0, "level": level + 1, "balance": coin + 500*level}})
+        DB.proverka(message.author.id, message.author.name)
+        #DB.economy(message.author.id)
     await client.process_commands(message)
 
 for file in listdir("./Comd"):
@@ -55,9 +43,7 @@ for file in listdir("./Comd"):
 
 @client.event
 async def on_command(ctx):
-    collection = db["commands"]
-    comd = collection.find_one({"bot_id": client.user.id})["command"]
-    collection.update_one({"bot_id": client.user.id}, {"$set": {"command": comd + 1}})
+    DB.commands()
 
 @client.event
 async def on_command_error(ctx, error):

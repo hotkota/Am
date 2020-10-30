@@ -1,11 +1,14 @@
-from random import randint
 import discord
+from random import randint
 from discord.ext import commands
+from importlib import import_module
 
-emb = discord.Embed(title = 'Команда "/ранд"',colour = discord.Color.red())
+cfg = import_module("config").prefix
+
+emb = discord.Embed(title = f'Команда "{cfg}ранд"',colour = discord.Color.red())
 emb.description = "Возращает случайное целое число указаное 1 параметром"
-emb.add_field(name = "Пример 1:", value = "`/ранд 100`\n\tВернет число от 0 до 100")
-emb.add_field(name = "Пример 2:", value = "`/ранд 100 200`\n\tВернет число от 100 до 200")
+emb.add_field(name = "Пример 1:", value = f"`{cfg}ранд 100`\n\tВернет число от 0 до 100")
+emb.add_field(name = "Пример 2:", value = f"`{cfg}ранд 100 200`\n\tВернет число от 100 до 200")
 
 class Rand(commands.Cog):
     def __init__(self, client):

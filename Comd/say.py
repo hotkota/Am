@@ -1,9 +1,12 @@
 import discord
 from discord.ext import commands
+from importlib import import_module
 
-emb = discord.Embed(title = 'Команда "/скажи"',colour = discord.Color.red())
+cfg = import_module("config").prefix
+
+emb = discord.Embed(title = f'Команда "{cfg}скажи"',colour = discord.Color.red())
 emb.description = "Оправляет сообщение от лица бота"
-emb.add_field(name = "Пример:", value = "`/скажи ам`")
+emb.add_field(name = "Пример:", value = f"`{cfg}скажи ам`")
 emb.add_field(name = "Результат:", value = "`ам`")
 
 class Say(commands.Cog):
