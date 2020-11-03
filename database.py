@@ -4,7 +4,10 @@ import config
 import pymysql
 
 conn = pymysql.connect(
-	
+	host = "localhost",
+	user = "root",
+	password = "amthebot127",
+	db = "forbot"
 )
 
 def start_database():
